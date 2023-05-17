@@ -1,32 +1,28 @@
 from graphene import (
     ObjectType,
-    # String,
-    # relay,
-    # # Field,
+    String,
+    Boolean,
     List,
-    # Int
+    Int
 )
 
-# from .funko import Funko as FunkoModel
-# from .objects import (
-#     Funko,
-#     User,
-# )
+from .persona import Persona as PersonaModel
 from .objects import Persona
 
 class Query(ObjectType):
-    personas = List(lambda: Persona)
-    # funkos = List(lambda: Funko, collection=String(), name=String())
-    # users = List(lambda: User)
+    personas = List(lambda: Persona, last_name=String(), id=Int(), has_email=Boolean(), order_by_name=Boolean())
 
-    # def resolve_funkos(self, info, collection=None, name=None):
-    #     query = Funko.get_query(info=info)
-    #     if collection:
-    #         query = query.filter(FunkoModel.collection == collection)
-    #     if name:
-    #         query = query.filter(FunkoModel.name == name)
-    #     return query.all()
-
-    def resolve_personas(self, info):
+    def resolve_personas(self, info, id=None, last_name=None, has_email=None, order_by_name=None):
         query = Persona.get_query(info=info)
+        if id:
+            query = query.filter(PersonaModel.id==id)
+        if last_name:
+            query = query.filter(PersonaModel.last_name==last_name)
+        if has_email is not None:
+            if has_email:
+                query = query.filter(PersonaModel.email != None)
+            else:
+                query = query.filter(PersonaModel.email == None)
+        if order_by_name:
+            query = query.order_by(PersonaModel.name)
         return query.all()

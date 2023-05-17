@@ -1,9 +1,10 @@
 from graphene_sqlalchemy import (
     SQLAlchemyObjectType,
 )
-# from graphene import (
-#     # Int
-# )
+from graphene import (
+    # Int
+    String
+)
 # from models.funko import Funko as FunkoModel
 # from models.user import User as UserModel
 from models.persona import Persona as PersonaModel
@@ -11,6 +12,7 @@ from models.persona import Persona as PersonaModel
 class Persona(SQLAlchemyObjectType):
     class Meta:
         model = PersonaModel
+    name = String(description='representa el nombre de la persona')
 
 # class Funko(SQLAlchemyObjectType):
 #     class Meta:
