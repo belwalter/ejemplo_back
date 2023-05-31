@@ -1,7 +1,7 @@
 from graphene import (
     ObjectType,
     Mutation,
-#     Int,
+    Int,
     String,
     Field,
 )
@@ -31,38 +31,45 @@ class createPersona(Mutation):
 
         return createPersona(persona=persona)
 
-# class updateFunko(Mutation):
-#     class Arguments:
-#         funko_id = Int(required=True)
-#         collection = String(required=True)
+class updatePersona(Mutation):
+    class Arguments:
+        persona_id = Int(required=True)
+        email = String()
+        name = String()
+        last_name = String()
 
-#     funko = Field(lambda: FunkoObject)
+    persona = Field(lambda: Persona)
 
-#     def mutate(self, info, collection, funko_id):
-#         funko = FunkoModel.query.get(funko_id)
-#         if funko:
-#             funko.collection = collection
-#             db.session.add(funko)
-#             db.session.commit()
+    def mutate(self, info, persona_id, email=None, name=None, last_name=None):
+        persona = PersonaModel.query.get(persona_id)
+        if persona:
+            if email:
+                persona.email = email
+            if name:
+                persona.name = name
+            if last_name:
+                persona.last_name = last_name
+            db.session.add(persona)
+            db.session.commit()
 
-#         return updateFunko(funko=funko)
+        return updatePersona(persona=persona)
 
 
-# class deleteFunko(Mutation):
-#     class Arguments:
-#         funko_id = Int(required=True)
+class deletePersona(Mutation):
+    class Arguments:
+        persona_id = Int(required=True)
 
-#     funko = Field(lambda: FunkoObject)
+    persona = Field(lambda: Persona)
 
-#     def mutate(self, info, funko_id):
-#         funko = FunkoModel.query.get(funko_id)
-#         if funko:
-#             db.session.delete(funko)
-#             db.session.commit()
+    def mutate(self, info, persona_id):
+        persona = PersonaModel.query.get(persona_id)
+        if persona:
+            db.session.delete(persona)
+            db.session.commit()
 
-#         return deleteFunko(funko=funko)
+        return deletePersona(persona=persona)
 
 class Mutation(ObjectType):
     create_persona = createPersona.Field()
-#     update_funko = updateFunko.Field()
-#     delete_funko = deleteFunko.Field()
+    update_persona = updatePersona.Field()
+    delete_persona = deletePersona.Field()

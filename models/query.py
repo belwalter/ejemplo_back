@@ -7,10 +7,12 @@ from graphene import (
 )
 
 from .persona import Persona as PersonaModel
-from .objects import Persona
+from .objects import Persona, Departamento
+from .departamento import Departamento as DepartamentoModel
 
 class Query(ObjectType):
     personas = List(lambda: Persona, last_name=String(), id=Int(), has_email=Boolean(), order_by_name=Boolean())
+    departamentos = List(lambda: Departamento)
 
     def resolve_personas(self, info, id=None, last_name=None, has_email=None, order_by_name=None):
         query = Persona.get_query(info=info)
@@ -25,4 +27,8 @@ class Query(ObjectType):
                 query = query.filter(PersonaModel.email == None)
         if order_by_name:
             query = query.order_by(PersonaModel.name)
+        return query.all()
+    
+    def resolve_departamentos(self, info):
+        query = Departamento.get_query(info=info)
         return query.all()

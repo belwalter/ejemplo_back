@@ -28,3 +28,15 @@ DELETE FROM persona WHERE id = 2;
 UPDATE persona SET email = 'algo@algo.com' WHERE id = 15;
 
 select * from departamento d join persona p on (d.fk_persona = p.id) where p.id =1;
+
+
+mutation{
+  createPersona(name: "Tito", lastName: "Ledesma", email: "asds@asd.asd"){
+    persona{
+      id
+      name
+      lastName
+      email 
+    }
+  }
+}

@@ -5,7 +5,7 @@ from graphene import (
     # Int
     String
 )
-# from models.funko import Funko as FunkoModel
+from models.departamento import Departamento as DepartamentoModel
 # from models.user import User as UserModel
 from models.persona import Persona as PersonaModel
 
@@ -14,13 +14,11 @@ class Persona(SQLAlchemyObjectType):
         model = PersonaModel
     name = String(description='representa el nombre de la persona')
 
-# class Funko(SQLAlchemyObjectType):
-#     class Meta:
-#         model = FunkoModel
-#     number = Int(description='the number of the funko pop')
-
+class Departamento(SQLAlchemyObjectType):
+    class Meta:
+        model = DepartamentoModel
+        # exclude_fields = ('fk_persona')
 
 # class User(SQLAlchemyObjectType):
 #     class Meta:
 #         model = UserModel
-#         exclude_fields = ('funko_id', 'last_name', )
