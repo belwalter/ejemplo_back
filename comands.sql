@@ -13,11 +13,13 @@ CREATE TABLE departamento (
 	REFERENCES persona (id)
 );
 
-
-
+alter table persona add column depto_fk int;
+alter table persona add CONSTRAINT persona_frkey FOREIGN key (depto_fk) refences departamento (id)
+update persona set depto_fk = valor where id = valor;
+alter table persona alter column depto_fk set not null;
 
 INSERT INTO persona (name, last_name) VALUES ('Juan', 'Saldivia');
-
+INSERT INTO departamento (name, fk_persona) values ('compras', 1);
 
 SELECT * FROM persona;
 

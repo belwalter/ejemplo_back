@@ -7,3 +7,6 @@ class Persona(db.Model):
     name = db.Column(db.String(50))
     last_name = db.Column(db.String(500))
     email  = db.Column(db.String(150), nullable=True)
+    depto_fk = db.Column(db.Integer, db.ForeignKey("departamento.id"))
+    departamento = db.relationship('Departamento', backref='personas_depto')
+
