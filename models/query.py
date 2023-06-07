@@ -1,5 +1,6 @@
 from graphene import (
     ObjectType,
+    Field,
     String,
     Boolean,
     List,
@@ -13,6 +14,7 @@ from .departamento import Departamento as DepartamentoModel
 class Query(ObjectType):
     personas = List(lambda: Persona, last_name=String(), id=Int(), has_email=Boolean(), order_by_name=Boolean())
     departamentos = List(lambda: Departamento)
+    departamento = Field(lambda: Departamento, id=Int())
 
     def resolve_personas(self, info, id=None, last_name=None, has_email=None, order_by_name=None):
         query = Persona.get_query(info=info)
@@ -32,3 +34,7 @@ class Query(ObjectType):
     def resolve_departamentos(self, info):
         query = Departamento.get_query(info=info)
         return query.all()
+    
+    def resolve_departamento(self, info, id):
+        dpto = DepartamentoModel.query.get(id)
+        return dpto
